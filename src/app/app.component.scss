@@ -1,0 +1,134 @@
+.user-setting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+
+  select {
+    border: 2px solid #CCC;
+    font-size: 40px;
+  }
+
+  ol {
+    margin-left: 40px;
+
+    > li {
+      display: flex;
+
+      > input {
+        margin-left: 20px;
+      }
+
+      + li {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  button {
+    margin-left: 20px;
+  }
+}
+
+figure {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+.answer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 20px;
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    > li {
+      white-space: nowrap;
+
+      + li {
+        margin-left: 10px;
+      }
+
+      &:last-child {
+        color: blue;
+      }
+
+      > figure {
+        width: 1em;
+        height: 1em;
+      }
+    }
+  }
+
+  div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    white-space: nowrap;
+
+    > h2 {
+      display: flex;
+      align-items: center;
+
+      > span {
+        margin-left: 10px;
+      }
+    }
+
+    > input {
+      margin-left: 20px;
+    }
+
+    > p {
+      position: absolute;
+      right: 90px;
+      bottom: -48px;
+      font-weight: bold;
+      color: #DC0000;
+    }
+
+    > button {
+      margin-left: 20px;
+    }
+  }
+}
+
+.chars {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: calc(40px * 15 + 10px * (15 - 1));
+  height: calc(40px * 5 + 40px * 2);
+  margin: 0 auto;
+  padding: 40px;
+
+  > li {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+
+    &:nth-child(n+6) {
+      margin-left: 10px;
+    }
+
+    > span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+
+      &.is-exist {
+        border-radius: 100%;
+        color: #FFFFFF;
+      }
+    }
+  }
+}

@@ -1,20 +1,79 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<form
+  name="userSettingForm"
+  #userSettingForm="ngForm"
+  (ngSubmit)="onSubmit('userSettingForm')"
+  *ngIf="currentState === 'USER_SETTING'"
+  class="user-setting">
 
+  <select
+    name="selectedPersonLength"
+    [(ngModel)]="selectedPersonLength"
+    (change)="onChangeSelectedPersonLength()">
+
+    <option
+      *ngFor="let personSuggetion of personSuggetions"
+      [ngValue]="personSuggetion">
+      {{personSuggetion}}
+    </option>
+  </select>
+
+  <ol>
+    <li *ngFor="let user of users; index as i">
+      <figure [ngStyle]="{ 'background-color': user.color}"></figure>
+
+      <input
+        type="text"
+        name="user-{{i}}"
+        [(ngModel)]="user.name">
+    </li>
+  </ol>
+
+  <button type="submit">START</button>
+</form>
+
+<ol
+  class="chars"
+  *ngIf="currentState === 'ANSWER'">
+
+  <li *ngFor="let c of chars">
+    <span
+      [ngClass]="{ 'is-exist': getAnswererColor(c) }"
+      [ngStyle]="{ 'background-color': getAnswererColor(c)}">
+      {{c}}
+    </span>
+  </li>
+</ol>
+
+<form
+  name="answerForm"
+  #answerForm="ngForm"
+  (ngSubmit)="onSubmit('answerForm')"
+  *ngIf="currentState === 'ANSWER'"
+  class="answer">
+
+  <ol>
+    <li *ngFor="let item of history">
+      <figure [ngStyle]="{ 'background-color': getUserColor('name', item.createdBy)}"></figure>
+      <span>{{item.word}}</span>
+    </li>
+  </ol>
+
+  <div>
+    <h2>
+      <figure [ngStyle]="{ 'background-color': getUserColor('name', getCurrentAnswerer().name)}"></figure>
+      <span>{{getCurrentAnswerer().name}}</span>
+    </h2>
+
+    <input
+      type="text"
+      name="currentAnswer"
+      [(ngModel)]="currentAnswer">
+
+    <p>
+      <span *ngIf="!this.isAnswerHiragana">答えはひらがなで入力してください<br /></span>
+      <span *ngIf="!this.isShiritoriEstablished">しりとりが成立していません</span>
+    </p>
+
+    <button type="submit">送信</button>
+  </div>
+</form>
