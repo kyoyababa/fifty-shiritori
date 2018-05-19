@@ -42,10 +42,12 @@ figure {
   align-items: flex-start;
   padding: 20px;
 
-  ol {
+  + ol {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
+    margin-top: 50px;
+    padding: 0 40px;
 
     > li {
       white-space: nowrap;

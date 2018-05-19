@@ -13,7 +13,7 @@
     <option
       *ngFor="let personSuggetion of personSuggetions"
       [ngValue]="personSuggetion">
-      {{personSuggetion}}
+      {{personSuggetion}}人でやる
     </option>
   </select>
 
@@ -24,6 +24,7 @@
       <input
         type="text"
         name="user-{{i}}"
+        placeholder="なまえ"
         [(ngModel)]="user.name">
     </li>
   </ol>
@@ -51,13 +52,6 @@
   *ngIf="currentState === 'ANSWER'"
   class="answer">
 
-  <ol>
-    <li *ngFor="let item of history">
-      <figure [ngStyle]="{ 'background-color': getUserColor('name', item.createdBy)}"></figure>
-      <span>{{item.word}}</span>
-    </li>
-  </ol>
-
   <div>
     <h2>
       <figure [ngStyle]="{ 'background-color': getUserColor('name', getCurrentAnswerer().name)}"></figure>
@@ -77,3 +71,10 @@
     <button type="submit">送信</button>
   </div>
 </form>
+
+<ol *ngIf="currentState === 'ANSWER'">
+  <li *ngFor="let item of history">
+    <figure [ngStyle]="{ 'background-color': getUserColor('name', item.createdBy)}"></figure>
+    <span>{{item.word}}</span>
+  </li>
+</ol>

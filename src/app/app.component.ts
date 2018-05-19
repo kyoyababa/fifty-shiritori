@@ -19,7 +19,7 @@ export interface IUser {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public selectedPersonLength: number = 1;
+  public selectedPersonLength: number = 4;
   public currentState = 'USER_SETTING';
   public currentAnswer: string = null;
   public isShiritoriEstablished: boolean = true;
@@ -31,12 +31,12 @@ export class AppComponent implements OnInit {
   public history: Array<IHistoryItem> = [];
   public score: Object = {};
 
-  protected chars = 'あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつってとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよゃゅょらりるれろわーん'.split('');
+  protected chars = 'あいうえおぁぃぅぇぉかきくけこがぎぐげごさしすせそざじずぜぞたちつてと　　っ　　だぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもや　ゆ　よゃ　ゅ　ょらりるれろわーん'.split('');
 
   constructor() {}
 
   ngOnInit() {
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
       this.personSuggetions.push(i);
     }
 
@@ -57,9 +57,11 @@ export class AppComponent implements OnInit {
   }
 
   private getUserColor(key: string, value: any): string {
+    const colorScheme = ['#FF6D00', '#FFD600', '#64DD17', '#00BFA5', '#0091EA', '#6200EA', '#D50000'];
+
     switch (key) {
       case 'index':
-        return `hsl(${value * 100}, 50%, 50%)`;
+        return colorScheme[value - 1];
 
       case 'name':
         const targetUser = this.users.find(user => user.name === value);
@@ -75,20 +77,32 @@ export class AppComponent implements OnInit {
     if (!beforeWord || !currentWord) return false;
 
     if (currentWord.slice(-1) === 'ん') return false;
+    if (currentWord.slice(-1) === 'ー' && currentWord.slice(-2).slice(0, 1) === 'ー') return false;
 
     const exp = currentWord.slice(0, 1);
+
+    if (beforeWord.slice(-1) === 'ぁ') return exp === 'あ';
+    if (beforeWord.slice(-1) === 'ぃ') return exp === 'い';
+    if (beforeWord.slice(-1) === 'ぅ') return exp === 'う';
+    if (beforeWord.slice(-1) === 'ぇ') return exp === 'え';
+    if (beforeWord.slice(-1) === 'ぉ') return exp === 'お';
     if (beforeWord.slice(-1) === 'っ') return exp === 'つ';
     if (beforeWord.slice(-1) === 'ゃ') return exp === 'や';
     if (beforeWord.slice(-1) === 'ゅ') return exp === 'ゆ';
     if (beforeWord.slice(-1) === 'ょ') return exp === 'よ';
-    if (beforeWord.slice(-1) === 'ー') return beforeWord.slice(-2) === currentWord.slice(0, 1);
+    if (beforeWord.slice(-1) === 'ー') return exp === beforeWord.slice(-2).slice(0, 1);
 
-    return beforeWord.slice(-1) === currentWord.slice(0, 1);
+    return exp === beforeWord.slice(-1);
+  }
+
+  private isUserSettingFormValid(): boolean {
+    return this.users.filter(user => user.name === '' || user.name === null).length === 0;
   }
 
   public onSubmit(formKey: string): void {
     switch(formKey) {
       case 'userSettingForm':
+        if (!this.isUserSettingFormValid()) return;
         this.users[0].isAnswerer = true;
         this.currentState = 'ANSWER';
         break;
